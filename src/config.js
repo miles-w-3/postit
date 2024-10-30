@@ -1,10 +1,10 @@
 module.exports.SITE = {
-  name: 'TailNext',
+  name: 'POST-IT',
 
-  origin: 'https://tailnext.vercel.app',
+  origin: 'https://postit.klom.dev',
   basePathname: '/',
   trailingSlash: false,
 
-  title: 'TailNext — Your website with Next.js + Tailwind CSS',
-  description: 'TailNext is a free and ready to start template to make your website using Next.js and Tailwind CSS.',
+  title: 'POST-IT',
+  description: 'The most interesting magazine on the web',
 };

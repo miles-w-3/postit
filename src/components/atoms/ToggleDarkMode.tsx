@@ -14,7 +14,9 @@ const ToggleDarkMode = () => {
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+    // default to light
+    setTheme('light');
+  }, [setTheme]);
 
   return (
     <button

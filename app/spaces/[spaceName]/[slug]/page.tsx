@@ -2,28 +2,40 @@ import md from 'markdown-it';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 
-import { findPostBySlug, findLatestPosts } from '~/utils/posts';
+import { findPostBySlug, fetchPosts, findLatestPosts, SPACES_DIRS, fetchSlugs } from '~/utils/posts';
 
 export const dynamicParams = false;
 
-const getFormattedDate = (date) => date;
+interface SpacesSlugParams {spaceName: string, slug: string}
+interface SpacesSlugProps { params: SpacesSlugParams }
 
-export async function generateMetadata({ params}) {
-  const post = await findPostBySlug(params.slug);
-  if (!post) {
-    return notFound();
-  }
-  return { title: post.title, description: post.description };
-}
+const getFormattedDate = (date: string) => date;
+
+// export async function generateMetadata({ params}) {
+//   const post = await findPostBySlug(params.slug);
+//   if (!post) {
+//     return notFound();
+//   }
+//   return { title: post.title, description: post.description };
+// }
 
 export async function generateStaticParams() {
-  return (await findLatestPosts()).map(({ slug }) => ({ slug }));
+  const postSlugs = fetchSlugs()
+  const staticParams: SpacesSlugParams[] = []
+  for (const [spaceName, spaceSlugs] of Object.entries(postSlugs)) {
+    for (const slug of spaceSlugs) {
+      staticParams.push({spaceName, slug})
+    }
+  }
+  return staticParams;
 }
 
-export default async function Page({ params }) {
-  const post = await findPostBySlug(params.slug);
+export default async function Page({ params }: SpacesSlugProps) {
+  const {spaceName, slug} = params
 
+  const post = await findPostBySlug(slug, SPACES_DIRS[spaceName])
   if (!post) {
+    console.log(`Could not find post`)
     return notFound();
   }
 
@@ -31,13 +43,14 @@ export default async function Page({ params }) {
     <section className="mx-auto py-8 sm:py-16 lg:py-20">
       <article>
         <header className={post.image ? 'text-center' : ''}>
-          <p className="mx-auto max-w-3xl px-4 sm:px-6">
-            <time dateTime={post.publishDate}>{getFormattedDate(post.publishDate)}</time> ~{' '}
-            {/* {Math.ceil(post.readingTime)} min read */}
-          </p>
           <h1 className="leading-tighter font-heading mx-auto mb-8 max-w-3xl px-4 text-4xl font-bold tracking-tighter sm:px-6 md:text-5xl">
             {post.title}
+
           </h1>
+          <p className="mx-auto max-w-3xl px-4 sm:px-6">
+            <time dateTime={post.publishDate}>{getFormattedDate(post.publishDate)}</time>
+            {/* {Math.ceil(post.readingTime)} min read */}
+          </p>
           {post.image ? (
             <Image
               src={post.image}

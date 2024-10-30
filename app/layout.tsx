@@ -33,7 +33,7 @@ export default function RootLayout({ children }: LayoutProps) {
       </head>
       <body className="tracking-tight antialiased text-gray-900 dark:text-slate-300 dark:bg-slate-900">
         <Providers>
-          <Announcement />
+          {false && <Announcement />}
           <Header />
           <main>{children}</main>
           <Footer2 />
