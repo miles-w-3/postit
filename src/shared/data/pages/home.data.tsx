@@ -28,7 +28,6 @@ import {
   TeamProps,
   TestimonialsProps,
 } from '../../types';
-import postitImg from '~/assets/images/postit.jpg';
 import nextJsLogo from '~/assets/images/nextjs-logo.png';
 import reactLogo from '~/assets/images/react-logo.png';
 import tailwindCssLogo from '~/assets/images/tailwind-css-logo.png';
@@ -48,8 +47,8 @@ export const heroHome: HeroProps = {
     </>
   ),
   image: {
-    src: postitImg,
-    alt: 'Post-It Label',
+    src: '/postit.gif',
+    alt: 'Post It Label',
   },
 };
 

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 import Image from 'next/image';
 import Link from 'next/link';
-import postitBase from '../../../src/assets/images/postit.jpg'
+import postitBase from '~/assets/images/postit.jpg'
 
 import { findLatestPosts, SPACES_DIRS, ParsedPost } from '~/utils/posts';
 

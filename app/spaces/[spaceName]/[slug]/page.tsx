@@ -1,6 +1,7 @@
 import md from 'markdown-it';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import postitBase from '~/assets/images/postit.jpg'
 
 import { findPostBySlug, fetchPosts, findLatestPosts, SPACES_DIRS, fetchSlugs } from '~/utils/posts';
 
@@ -10,6 +11,7 @@ interface SpacesSlugParams {spaceName: string, slug: string}
 interface SpacesSlugProps { params: SpacesSlugParams }
 
 const getFormattedDate = (date: string) => date;
+
 
 // export async function generateMetadata({ params}) {
 //   const post = await findPostBySlug(params.slug);
@@ -38,6 +40,8 @@ export default async function Page({ params }: SpacesSlugProps) {
     console.log(`Could not find post`)
     return notFound();
   }
+
+  if (!post.image) post.image = postitBase;
 
   return (
     <section className="mx-auto py-8 sm:py-16 lg:py-20">
