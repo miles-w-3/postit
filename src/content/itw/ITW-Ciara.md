@@ -2,13 +2,17 @@
 publishDate: 'Feb 04 2025'
 title: 'CIARA LYSCIO'
 description: 'Ciara is a senior at Fordham University, she moved from Arizona to the Big Apple to pursue her dreams and education. She now dabbles between painting and computer science, 
-fighting between passion and reason.
-In this interview, find out her thoughts on art, technology, New York hot spots, current celebs, and more!! 
-'
+fighting between passion and reason. In this interview, find out her thoughts on art, technology, New York hot spots, current celebs, and more!!'
 excerpt: '“Letting fate drive me but being very inspired and determined”'
 image: '/Ciara-1.png'
 tags: [markdown, blog]
 ---
+
+Ciara is a senior at Fordham University, she moved from Arizona to the Big Apple to pursue her dreams and education. She now dabbles between painting and computer science, 
+fighting between passion and reason. In this interview, find out her thoughts on art, technology, New York hot spots, current celebs, and more!!
+
+
+
 
 ## <a name="top/question"></a>Could you give us a few words to describe your current situation? 
 
