@@ -1,5 +1,4 @@
 import fs from 'fs';
-import matter from 'gray-matter';
 import { join } from 'path';
 import { compileMDX } from 'next-mdx-remote/rsc';
 import { StaticImageData } from 'next/image';
@@ -48,7 +47,6 @@ export const fetchPosts = async () => {
     }
 
   }
-  (`Providing posts ${JSON.stringify(_posts)[4]}`)
   return _posts;
 };
 
