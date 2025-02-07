@@ -1,8 +1,13 @@
 import fs from 'fs';
 import matter from 'gray-matter';
 import { join } from 'path';
+import { compileMDX } from 'next-mdx-remote/rsc';
+import { StaticImageData } from 'next/image';
+import { ReactElement } from 'react';
+import { error } from 'console';
 
 const SPACES_DIR_BASE = join(process.cwd(), 'src/content');
+const FILE_EXTENSION = '.mdx';
 
 // Source of truth for the dirs we're currently reading from - used to autogenerate /spaces pages
 export const SPACES_DIRS: Record<string, string> = {
@@ -14,9 +19,9 @@ export const SPACES_DIRS: Record<string, string> = {
 const load = async(targetDir: string) => {
   const files = fs.readdirSync(targetDir);
   const posts = files
-    .filter((filename) => filename.endsWith('.md'))
+    .filter((filename) => filename.endsWith(FILE_EXTENSION))
     .map((filename) => {
-      const slug = filename.replace('.md', '');
+      const slug = filename.replace(FILE_EXTENSION, '');
       return findPostBySlug(slug, targetDir);
     });
   return Promise.all(posts);
@@ -24,8 +29,8 @@ const load = async(targetDir: string) => {
 
 const findSlugs = (targetDir: string) => {
   const files = fs.readdirSync(targetDir)
-    .filter((filename) => filename.endsWith('.md'))
-    .map((fileName) => fileName.replace('.md', ''))
+    .filter((filename) => filename.endsWith(FILE_EXTENSION))
+    .map((fileName) => fileName.replace(FILE_EXTENSION, ''))
   return files
 }
 
@@ -75,12 +80,19 @@ export const findLatestPosts = async ({ dir, count }: {dir: string, count?: numb
 };
 
 
+export interface PostFrontmatter {
+  publishDate: string
+  title: string
+  excerpt: string
+  image: string | StaticImageData;
+  description: string
+  tags: string[]
+}
 
-export interface ParsedPost {
+export interface ParsedPost extends PostFrontmatter {
   slug: string,
   dir: string,
-  content: string,
-  [key: string]: any
+  content: ReactElement,
 }
 
 /** */
@@ -88,15 +100,23 @@ export const findPostBySlug = async (slug: string, dir: string): Promise<ParsedP
   if (!slug || !dir) return null;
 
   try {
-    const readFile = fs.readFileSync(join(dir, `${slug}.md`), 'utf-8');
-    const { data: frontmatter, content } = matter(readFile);
+    const readFile = fs.readFileSync(join(dir, `${slug}${FILE_EXTENSION}`), 'utf-8');
+
+    const { frontmatter, content } = await compileMDX<PostFrontmatter>({
+      source: readFile,
+      options: {
+        parseFrontmatter: true
+      }
+    });
     return {
       dir,
       slug,
       ...frontmatter,
       content,
     };
-  } catch (e) {}
+  } catch (e) {
+    console.error(`Failed to parse page ${dir}/${slug}: ${e}`)
+  }
 
   return null;
 };

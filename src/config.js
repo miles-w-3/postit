@@ -1,4 +1,4 @@
-module.exports.SITE = {
+const SITE = {
   name: 'POST IT',
 
   origin: 'https://postit.klom.dev',
@@ -8,3 +8,5 @@ module.exports.SITE = {
   title: 'POST IT',
   description: 'The most interesting magazine on the web',
 };
+
+export { SITE };

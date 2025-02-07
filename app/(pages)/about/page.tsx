@@ -121,7 +121,7 @@ const Page = () => {
           </div>
         </div>
       </section>
-      <section style={{ background: 'white' }} id="about-cosima">
+      <section style={{ background: 'white' }} id="about-plume">
         <div className="container mx-auto p-4">
           <div className="flex flex-col md:flex-row gap-16 items-start">
 
