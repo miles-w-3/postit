@@ -51,16 +51,15 @@ export default async function Page() {
 
     showingPosts.push(newestPost);
   }
+  // sort newest first
+  showingPosts.sort((a, b) => new Date(a.publishDate) > new Date(b.publishDate) ? -1 : 1)
   return (
     <>
       <Hero {...heroHome} />
       <section className="mx-auto max-w-3xl px-6 py-12 sm:px-6 sm:py-16 lg:py-20">
         <header>
-          <h1 className="leading-tighter font-heading mb-8 text-center text-4xl font-bold tracking-tighter md:mb-16 md:text-5xl">
-            Featured Posts
-          </h1>
         </header>
-        <div className="grid grid-cols-1 gap-6  p-4 md:p-0 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6  p-4 md:p-0 lg:grid-cols-3">
           {showingPosts.map(({ slug, title, image, dir }) => {
             // TODO: Clean up getting the space.
             const splitDir = dir.split('/');
