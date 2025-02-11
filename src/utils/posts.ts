@@ -83,7 +83,7 @@ export interface PostFrontmatter {
   title: string
   excerpt: string
   image: string | StaticImageData;
-  description: string
+  addClasses?: string
   tags: string[]
 }
 
