@@ -81,9 +81,12 @@ export const findLatestPosts = async ({ dir, count }: {dir: string, count?: numb
 export interface PostFrontmatter {
   publishDate: string
   title: string
+  addTitleClasses ?: string
+  description ?: string
   excerpt: string
   image: string | StaticImageData;
   addClasses?: string
+  bodyFont?: string
   tags: string[]
 }
 

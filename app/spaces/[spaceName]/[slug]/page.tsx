@@ -3,6 +3,7 @@ import { MDXRemote } from 'next-mdx-remote';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import postitBase from '~/assets/images/postit.jpg'
+import fontBindings from '~/utils/fontBindings'
 
 import { findPostBySlug, fetchPosts, findLatestPosts, SPACES_DIRS, fetchSlugs } from '~/utils/posts';
 
@@ -44,18 +45,28 @@ export default async function Page({ params }: SpacesSlugProps) {
 
   if (!post.image) post.image = postitBase;
 
+  let fontClass = "";
+  if (post.bodyFont) {
+    fontClass = fontBindings[post.bodyFont] ?? ""
+  }
+
   return (
     <section className="mx-auto py-8 sm:py-16 lg:py-20">
       <article>
         <header className={post.image ? 'text-center' : ''}>
-          <h1 className="leading-tighter font-heading mx-auto mb-8 max-w-3xl px-4 text-4xl font-bold tracking-tighter sm:px-6 md:text-5xl">
+          <h1 className={`leading-tighter font-heading mx-auto mb-8 max-w-3xl px-4 text-4xl font-bold tracking-tighter sm:px-6 md:text-5xl ${post.addTitleClasses ?? ""}`}>
             {post.title}
 
           </h1>
-          <p className="mx-auto max-w-3xl px-4 sm:px-6">
-            <time dateTime={post.publishDate}>{getFormattedDate(post.publishDate)}</time>
-            {/* {Math.ceil(post.readingTime)} min read */}
-          </p>
+          <div className={fontClass}>
+            <p className="mx-auto max-w-3xl px-4 sm:px-6">
+              <time dateTime={post.publishDate}>{getFormattedDate(post.publishDate)}</time>
+              {/* {Math.ceil(post.readingTime)} min read */}
+            </p>
+            <p className='mx-auto max-w-3xl py-4 px-4 sm:px-6'>
+              {post.description ?? ""}
+            </p>
+          </div>
           {post.image ? (
             <Image
               src={post.image}
@@ -74,7 +85,7 @@ export default async function Page({ params }: SpacesSlugProps) {
           )}
         </header>
         <div className={`prose-md prose-headings:font-heading prose-headings:leading-tighter container prose prose-lg mx-auto mt-8 max-w-3xl px-6 prose-headings:font-bold prose-headings:tracking-tighter prose-a:text-primary-600 prose-img:rounded-md prose-img:shadow-lg dark:prose-invert dark:prose-headings:text-slate-300 dark:prose-a:text-primary-400 sm:px-6 lg:prose-xl`}>
-            <div className={post.addClasses ?? ""}>
+            <div className={`${post.addClasses ?? ""} ${fontClass}`}>
               {post.content}
             </div>
         </div>
