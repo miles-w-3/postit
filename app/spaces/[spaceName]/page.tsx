@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 
 import Image from 'next/image';
 import Link from 'next/link';
-import postitBase from '~/assets/images/postit.jpg'
+import PostLink from '~/components/blogs/PostLink';
 
-import { findLatestPosts, SPACES_DIRS, ParsedPost } from '~/utils/posts';
+import { findLatestPosts, SPACES_DIRS, ParsedPost, PostFrontmatter } from '~/utils/posts';
 
 interface SpacesHomeParams { spaceName: string }
 interface SpacesHomeProps { params: SpacesHomeParams }
@@ -28,7 +28,8 @@ export default async function Home({ params }: SpacesHomeProps) {
   const spaceName = params.spaceName
   // FIXME: Would like to be able to use type, but need deconstruction to succeed
   const posts = await findLatestPosts({dir: SPACES_DIRS[spaceName]}) as any[]
-  //console.log(`Read posts as ${JSON.stringify(posts)}`)
+  // sort newest first
+  posts.sort((a, b) => new Date(a.publishDate) > new Date(b.publishDate) ? -1 : 1)
   return (
     <section className="mx-auto max-w-3xl px-6 py-12 sm:px-6 sm:py-16 lg:py-20">
       <header>
@@ -37,13 +38,8 @@ export default async function Home({ params }: SpacesHomeProps) {
         </h1>
       </header>
       <div className="grid grid-cols-1 gap-6  p-4 md:p-0 lg:grid-cols-2">
-        {posts.map(({ slug, title, image }: { slug: string, title: string, image: string, dir: string }) => (
-          <div key={slug} className="flex flex-col overflow-hidden rounded-xl border border-gray-200 shadow-lg">
-            <Link href={`/spaces/${spaceName}/${slug}`}>
-              <Image width={650} height={340} alt={title} src={image ? `${image}` : postitBase} />
-              <h2 className="p-4 font-bold">{title}</h2>
-            </Link>
-          </div>
+        {posts.map(post => (
+          <PostLink key={post.slug} post={post} spaceName={spaceName}/>
         ))}
       </div>
     </section>

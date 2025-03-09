@@ -31,6 +31,7 @@ import postitBase from '~/assets/images/postit.jpg'
 import { fetchPosts, ParsedPost } from '~/utils/posts';
 import Link from 'next/link';
 import Image from 'next/image';
+import PostLink from '~/components/blogs/PostLink';
 
 export const metadata: Metadata = {
   title: SITE.title,
@@ -59,19 +60,13 @@ export default async function Page() {
       <section className="mx-auto max-w-3xl px-6 py-12 sm:px-6 sm:py-16 lg:py-20">
         <header>
         </header>
-        <div className="grid grid-cols-1 gap-6  p-4 md:p-0 lg:grid-cols-3">
-          {showingPosts.map(({ slug, title, image, dir }) => {
+        <div className="grid grid-cols-1 gap-6 p-4 md:p-0 lg:grid-cols-2">
+          {showingPosts.map((post) => {
             // TODO: Clean up getting the space.
-            const splitDir = dir.split('/');
+            const splitDir = post.dir.split('/');
             const spaceName = splitDir[splitDir.length - 1];
-            // TODO: Need a standard post link component between here and spaces
             return (
-              <div key={slug} className="flex flex-col overflow-hidden rounded-xl border border-gray-200 shadow-lg">
-                <Link className="flex flex-col h-full" href={`/spaces/${spaceName}/${slug}`}>
-                  <Image width={650} height={340} alt={title} src={image ? `${image}` : postitBase} />
-                  <h2 className="p-4 mt-auto font-bold">{title}</h2>
-                </Link>
-              </div>
+              <PostLink key={post.slug} spaceName={spaceName} post={post} />
             )
           })}
         </div>
